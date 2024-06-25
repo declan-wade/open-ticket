@@ -9,23 +9,21 @@ export async function POST(req: Request, res: Response) {
   if (req.method === "POST") {
     try {
       const { data }: any = req.body;
-      const {
+      console.log(data)
+/*       const {
         id,
         email_addresses,
         first_name,
         last_name,
         primary_email_address_id,
-      } = data;
-
+      } = data; */
+      console.log("running prisma")
       const user = await prisma.user.create({
         data: {
-          id,
-          last_name: last_name,
-          first_name: first_name,
-          email:
-            email_addresses.find(
-              (email: any) => email.id === primary_email_address_id
-            )?.email_address || null,
+          id: data.id,
+          last_name: data.last_name,
+          first_name: data.first_name,
+          email: data.email_addresses[0].email_address,
         } as any,
       });
 
