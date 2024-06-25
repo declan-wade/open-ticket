@@ -6,9 +6,8 @@ import { NextResponse } from 'next/server'
 const prisma = new PrismaClient();
 
 export async function POST(req: Request, res: Response) {
-  if (req.method === "POST") {
+  const { data }: any = await req.json();
     try {
-      const { data }: any = req.body;
       console.log(data)
 /*       const {
         id,
@@ -34,7 +33,4 @@ export async function POST(req: Request, res: Response) {
     } finally {
       await prisma.$disconnect();
     }
-  } else {
-    return NextResponse.json({status: 405});
-  }
-}
+  } 
