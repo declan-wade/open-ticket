@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: Request, res: Response) {
+export default async function POST(req: Request, res: Response) {
   if (req.method === "POST") {
     try {
       const { data }: any = req.body;
