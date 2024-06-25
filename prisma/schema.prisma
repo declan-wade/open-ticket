@@ -8,18 +8,19 @@ datasource db {
 }
 
 model activity {
-  id        Int       @id @default(autoincrement())
-  ticket_id Int
-  username  String?   @db.VarChar(255)
-  change    String?   @db.VarChar(255)
-  timestamp DateTime? @default(now()) @db.Timestamp(6)
-  tickets   tickets   @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id         Int       @id @default(autoincrement())
+  ticket_id  Int
+  creator_id String
+  change     String?   @db.VarChar(255)
+  timestamp  DateTime? @default(now()) @db.Timestamp(6)
+  tickets    tickets   @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  creator    user      @relation("ActivityCreator", fields: [creator_id], references: [id])
 }
 
 model tickets {
   id           Int        @id @default(autoincrement())
-  owner_id     Int
-  creator_id   Int
+  owner_id     String
+  creator_id   String
   title        String?    @db.VarChar(255)
   description  String?
   priority     Int?
@@ -33,18 +34,24 @@ model tickets {
 }
 
 model comments {
-  id        Int      @id @default(autoincrement())
-  ticket_id Int
-  content   String
-  timestamp DateTime @default(now()) @db.Timestamp(6)
-  tickets   tickets  @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id         Int      @id @default(autoincrement())
+  ticket_id  Int
+  creator_id String
+  content    String
+  timestamp  DateTime @default(now()) @db.Timestamp(6)
+  tickets    tickets  @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  creator    user     @relation("CommentsCreator", fields: [creator_id], references: [id])
 }
 
 model user {
-  id           Int        @id @default(autoincrement())
-  first_name   String     @db.VarChar(255)
-  last_name    String     @db.VarChar(255)
-  email        String     @unique @db.VarChar(255)
-  ticketsOwned tickets[]  @relation("TicketOwner")
-  ticketsCreated tickets[] @relation("TicketCreator")
+  id              String     @id
+  first_name      String     @db.VarChar(255)
+  last_name       String     @db.VarChar(255)
+  email           String     @unique @db.VarChar(255)
+  datecreated     DateTime?  @default(now()) @db.Timestamp(6)
+  datemodified    DateTime?  @default(now()) @db.Timestamp(6)
+  ticketsOwned    tickets[]  @relation("TicketOwner")
+  ticketsCreated  tickets[]  @relation("TicketCreator")
+  commentsCreated comments[] @relation("CommentsCreator")
+  activityCreated activity[] @relation("ActivityCreator")
 }
