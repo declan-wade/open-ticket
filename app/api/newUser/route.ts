@@ -7,9 +7,10 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request, res: Response) {
   const { data, type }: any = await req.json();
+  console.log(type);
   if (type === "user.created") {
     try {
-      console.log("running prisma");
+      console.log("running user create");
       const user = await prisma.user.create({
         data: {
           id: data.id,
@@ -31,7 +32,7 @@ export async function POST(req: Request, res: Response) {
     }
   } else {
     try {
-      console.log("running prisma");
+      console.log("running user update");
       const user = await prisma.user.update({
         where: { id: data.id },
         data: {
