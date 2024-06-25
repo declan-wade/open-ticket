@@ -45,8 +45,8 @@ model comments {
 
 model user {
   id              String     @id
-  first_name      String     @db.VarChar(255)
-  last_name       String     @db.VarChar(255)
+  first_name      String?    @db.VarChar(255)
+  last_name       String?    @db.VarChar(255)
   email           String     @unique @db.VarChar(255)
   datecreated     DateTime?  @default(now()) @db.Timestamp(6)
   datemodified    DateTime?  @default(now()) @db.Timestamp(6)
